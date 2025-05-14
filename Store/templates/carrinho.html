@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+<div class='cart-main'>
+    <div class='cart-products-div'>
+        {% for item in usuario.carrinho.itens.all %}
+                <div class='cart-product-horizontal'>
+                    <img class='cart-product-image' src="{{ item.produto.imagem.url }}">
+                    <div class='cart-product-vertical'>
+                        <p class='cart-product-name'>{{ item.produto.nome }}</p>
+                        <div class='cart-product-horizontal-quantity'>
+                            <a class='cart-product-add' href=" {% url 'adicionar_carrinho' item.produto.id 1 %}">+</a>
+                            <p class='cart-product-quantity'>Quantidade:{{ item.quantidade }}</p>
+                            <a class='cart-product-minius' href="{% url 'remover_carrinho' item.produto.id %}">-</a>
+                        </div>
+                    </div>
+
+                    <div class='cart-product-vertical-2'>
+                        <p class='cart-product-price'>Valor Unitario: R${{ item.produto.preco }}</p>
+                        <p class='cart-product-price'>Subtotal: R${{ item.subtotal }}</p>
+                        <a class='cart-product-exclude' href="{% url 'excluir_carrinho' item.produto.id %}">Excluir</a>
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+
+    {% if usuario.carrinho.itens.all %}
+        <div class='cart-info'>
+            <p class='cart-total-price'>Preco Total: R${{ usuario.carrinho.total }}</p>
+            <a class='cart-finish-button' href="{% url 'pagamento' %}">Finalizar Pedido</a>
+        </div>
+    {% else %}
+        <h1>Carrinho Vazio!</h1>
+    {% endif %}
+    
+
+</div>
+{% endblock body %}

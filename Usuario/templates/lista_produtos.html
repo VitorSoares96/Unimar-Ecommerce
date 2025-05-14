@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+<h1 class='title'>Produtos</h1>
+
+<div class='div-produto-lista'>
+    <a style="margin-bottom: 25px;" class="button-unimar" href="{% url 'adicionar_produto' usuariousername %}">Adicionar Produto</a>
+    {% for produto in usuario.produtos.all %}
+        <div class="produto-lista">
+            <img src="{{ produto.imagem.url }}">
+            <p class="produto-lista-nome">{{ produto.nome }}</p>
+            <p class="produto-lista-preco">R${{ produto.preco }}</p>
+            <a href="{% url 'editar_produto' produto.id %}">Editar</a>
+            <form class="excluir-produto" action="{% url 'excluir_produto' id_produto=produto.id %}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este produto?');">
+                {% csrf_token %}
+                <input class="form-button delete-button" type="submit" value="X">
+            </form>
+        </div>
+    {% endfor %}
+</div>
+{% endblock body %}
