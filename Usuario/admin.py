@@ -1,6 +1,6 @@
+# Usuario/admin.py
 from django.contrib import admin
-from .models import Profile, ItemOrder
+from .models import Profile # Remova ", ItemOrder" desta linha
 
-# Register your models here.
 admin.site.register(Profile)
-admin.site.register(ItemOrder)
+# Remova a linha "admin.site.register(ItemOrder)" se ela existir

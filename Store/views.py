@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Produto
-from Usuario.models import Carrinho, ItemCarrinho, Order, ItemOrder
+from .models import Produto, Categoria, Carrinho, ItemCarrinho, Order, ItemOrder
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 

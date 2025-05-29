@@ -3,6 +3,15 @@
 {% load static %}
 
 {% block body %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="messages-box {{ message.level_tag }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+
 <div class="home-div">
     <div class="unimar-banner">
         <p>O melhor Marketplace da Unimar!</p>

@@ -32,6 +32,9 @@
             <nav class="navbar">
                 <ul>
                     <li><a href="{% url "home" %}">Inicio</a></li>
+                    {% if request.user.is_superuser%}
+                    <li><a href="{% url 'ver_solicitacao' %}">Ver Solicitações</a></li>
+                    {% endif %}
                     {% if request.user.is_authenticated and not request.user.perfil.vendedor %}
                     <li><a href="{% url 'solicitar_vendedor' %}">Tornar Vendedor</a></li>
                     {% elif request.user.perfil.vendedor and request.user.is_authenticated %}

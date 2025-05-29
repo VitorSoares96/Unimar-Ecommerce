@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Profile, Order
-from Store.models import Produto
+from .models import Profile
+from Store.models import Produto, Order, Solicitacao_Vendedor
 from django.core.files.storage import FileSystemStorage
 import os
+from django.http import Http404
 
 def cadastrar(request):
     if request.method == "GET":
@@ -52,7 +53,22 @@ def deslogar(request):
         return redirect('home')
 
 def solicitar_vendedor(request):
-    return render(request, 'solicitar_vendedor.html')
+    if request.method == 'GET':
+        return render(request, 'solicitar_vendedor.html')
+    elif request.method == 'POST':
+        nome_completo = request.POST.get('nome-completo')
+        cpf = request.POST.get('cpf')
+        descricao = request.POST.get('produtos-a-vender')
+
+        solicitacao = Solicitacao_Vendedor.objects.create(usuario=request.user, nome_completo=nome_completo, cpf=cpf, descricao=descricao)
+        solicitacao.save()
+
+        messages.success(request, ("Solicitado com sucesso, aguarde até darmos uma resposta!"))
+        return redirect('home')
+    
+def ver_solicitacao(request):
+    solicitacoes = Solicitacao_Vendedor.objects.all()
+    return render(request, 'ver_solicitacao.html', {'solicitacoes':solicitacoes})
 
 def perfil(request, username):
     usuario = User.objects.get(username=username)
@@ -188,6 +204,9 @@ def vendas(request):
     return render(request, 'vendas.html', {'orders':orders})
 
 def vendas_details(request, order_id):
-    order = Order.objects.get(id=order_id)
+    order = get_object_or_404(Order, id=order_id)
+    if order.vendedor != request.user:
+        raise Http404
+
     itemOrders = order.itens.all()
     return render(request, 'vendas_details.html', {'itemOrders': itemOrders})

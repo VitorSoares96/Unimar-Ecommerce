@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class='div-produto-lista'>
+        {% for solicitacao in solicitacoes %}
+            <a class='vendas-order' style="width: 450px;" href="{% url 'home' %}">
+                <p>{{solicitacao.nome_completo}} - {{solicitacao.cpf}}</p>
+                <p>{{solicitacao.descricao}}</p>
+            </a>
+        {% endfor %}
+    </div>
+
+{% endblock body %}
