@@ -32,3 +32,12 @@ jobs:
         run: |
           coverage run manage.py test
           coverage report
+
+      - name: Gerar relatório de cobertura em HTML
+        run: coverage html
+
+      - name: Publicar HTML do coverage como artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: cobertura-html
+          path: htmlcov
