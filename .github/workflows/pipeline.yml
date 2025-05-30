@@ -31,3 +31,11 @@ jobs:
       - name: Rodar testes com coverage
         run: |
           coverage run manage.py test
+          coverage report
+          coverage html
+          
+      - name: Salvar relatório de coverage como artefato
+        uses: actions/upload-artifact@v3.1.2  # ou @v3
+        with:
+          name: coverage-report
+          path: htmlcov
